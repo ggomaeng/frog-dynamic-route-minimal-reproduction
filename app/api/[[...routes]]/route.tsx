@@ -1,16 +1,12 @@
 /** @jsxImportSource frog/jsx */
 
-import { Button, Frog, TextInput, parseEther } from "frog";
+import { Button, Frog, TextInput } from "frog";
 import { devtools } from "frog/dev";
-import { pinata } from "frog/hubs";
 import { handle } from "frog/next";
 import { serveStatic } from "frog/serve-static";
 
 const app = new Frog({
-  verify: false,
-  assetsPath: "/",
   basePath: "/api",
-  hub: pinata(),
 });
 
 app.frame("/", (c) => {
@@ -61,14 +57,6 @@ app.frame("/", (c) => {
       <Button.Transaction target="/transaction">hello</Button.Transaction>,
       status === "response" && <Button.Reset>Reset</Button.Reset>,
     ],
-  });
-});
-
-app.transaction("/transaction", async (c) => {
-  return c.send({
-    chainId: "eip155:8453",
-    to: "0x6f6bEeA71BF5dbF95e3EaB51b7e87209b06f8Daf",
-    value: parseEther("0.001"),
   });
 });
 
