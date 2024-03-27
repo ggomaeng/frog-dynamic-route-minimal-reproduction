@@ -87,9 +87,7 @@ app.frame("/:dynamicUrl", (c) => {
         </div>
       </div>
     ),
-    intents: [
-      <Button.Transaction target="/transaction">10</Button.Transaction>,
-    ],
+    intents: [<Button>Hello World!</Button>],
   });
 });
 
