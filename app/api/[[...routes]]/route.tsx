@@ -1,12 +1,16 @@
 /** @jsxImportSource frog/jsx */
 
-import { Button, Frog, TextInput } from "frog";
+import { Button, Frog, TextInput, parseEther } from "frog";
 import { devtools } from "frog/dev";
+import { pinata } from "frog/hubs";
 import { handle } from "frog/next";
 import { serveStatic } from "frog/serve-static";
 
 const app = new Frog({
+  verify: false,
+  assetsPath: "/",
   basePath: "/api",
+  hub: pinata(),
 });
 
 app.frame("/", (c) => {
@@ -60,6 +64,14 @@ app.frame("/", (c) => {
   });
 });
 
+app.transaction("/transaction", async (c) => {
+  return c.send({
+    chainId: "eip155:8453",
+    to: "0x6f6bEeA71BF5dbF95e3EaB51b7e87209b06f8Daf",
+    value: parseEther("0.001"),
+  });
+});
+
 app.frame("/:dynamicUrl", (c) => {
   const dynamicUrl = c.req.param("dynamicUrl");
   return c.res({
@@ -87,7 +99,9 @@ app.frame("/:dynamicUrl", (c) => {
         </div>
       </div>
     ),
-    intents: [<Button>Hello World!</Button>],
+    intents: [
+      <Button.Transaction target="/transaction">10</Button.Transaction>,
+    ],
   });
 });
 
